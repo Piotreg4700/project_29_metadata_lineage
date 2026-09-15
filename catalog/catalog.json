@@ -1,0 +1,898 @@
+{
+  "pipeline_run_id": "6ab2c280ea8f",
+  "created_at": "2026-06-29T07:50:39.331799+00:00",
+  "generated_at": "2026-06-29T07:50:42.080346+00:00",
+  "assets": {
+    "weather_bronze": {
+      "name": "weather_bronze",
+      "layer": "bronze",
+      "description": "Surowe pomiary pogodowe pobrane z REST API, jeden wiersz na pomiar, wzbogacone o metadane pobrania. Bez zadnego czyszczenia.",
+      "location": "C:\\AWS_28\\project_29_metadata_lineage\\data\\bronze\\weather_bronze.parquet",
+      "fmt": "parquet",
+      "row_count": 400,
+      "columns": [
+        {
+          "name": "timestamp",
+          "dtype": "string",
+          "pandas_dtype": "object",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Czas pomiaru zwrocony przez API (ISO-8601, UTC).",
+          "source_columns": [
+            "weather_api.records"
+          ]
+        },
+        {
+          "name": "station_id",
+          "dtype": "string",
+          "pandas_dtype": "object",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Identyfikator stacji pogodowej.",
+          "source_columns": [
+            "weather_api.records"
+          ]
+        },
+        {
+          "name": "temperature",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Temperatura powietrza w stopniach Celsjusza.",
+          "source_columns": [
+            "weather_api.records"
+          ]
+        },
+        {
+          "name": "humidity",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Wilgotnosc wzgledna w procentach.",
+          "source_columns": [
+            "weather_api.records"
+          ]
+        },
+        {
+          "name": "pressure",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Cisnienie atmosferyczne w hPa.",
+          "source_columns": [
+            "weather_api.records"
+          ]
+        },
+        {
+          "name": "wind_speed",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Predkosc wiatru (m/s).",
+          "source_columns": [
+            "weather_api.records"
+          ]
+        },
+        {
+          "name": "wind_direction",
+          "dtype": "integer",
+          "pandas_dtype": "int64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Kierunek wiatru w stopniach (0-359).",
+          "source_columns": [
+            "weather_api.records"
+          ]
+        },
+        {
+          "name": "rain_mm",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Opad deszczu w milimetrach.",
+          "source_columns": [
+            "weather_api.records"
+          ]
+        },
+        {
+          "name": "cloud_cover",
+          "dtype": "integer",
+          "pandas_dtype": "int64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Zachmurzenie w procentach.",
+          "source_columns": [
+            "weather_api.records"
+          ]
+        },
+        {
+          "name": "_ingested_at",
+          "dtype": "string",
+          "pandas_dtype": "object",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Znacznik czasu pobrania dodany przez warstwe Bronze (metadane lineage).",
+          "source_columns": [
+            "weather_api.records"
+          ]
+        },
+        {
+          "name": "_source_file",
+          "dtype": "string",
+          "pandas_dtype": "object",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Sciezka surowego pliku JSON, z ktorego wczytano ten wiersz (metadane lineage).",
+          "source_columns": [
+            "weather_api.records"
+          ]
+        }
+      ],
+      "produced_by_run": "78ff21e0c3b0",
+      "created_at": "2026-06-29T07:50:42.001205+00:00",
+      "content_hash": "1cc32519a68a385a"
+    },
+    "weather_silver": {
+      "name": "weather_silver",
+      "layer": "silver",
+      "description": "Zwalidowane, odduplikowane i przerzutowane pomiary (tylko poprawne wiersze).",
+      "location": "C:\\AWS_28\\project_29_metadata_lineage\\data\\silver\\weather_silver.parquet",
+      "fmt": "parquet",
+      "row_count": 400,
+      "columns": [
+        {
+          "name": "timestamp",
+          "dtype": "timestamp",
+          "pandas_dtype": "datetime64[ns, UTC]",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Sparsowany czas pomiaru (ze strefa czasowa, UTC).",
+          "source_columns": [
+            "weather_bronze.timestamp"
+          ]
+        },
+        {
+          "name": "station_id",
+          "dtype": "string",
+          "pandas_dtype": "object",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Identyfikator stacji pogodowej.",
+          "source_columns": [
+            "weather_bronze.station_id"
+          ]
+        },
+        {
+          "name": "temperature",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Zwalidowana temperatura powietrza (Celsjusz) w wiarygodnym zakresie.",
+          "source_columns": [
+            "weather_bronze.temperature"
+          ]
+        },
+        {
+          "name": "humidity",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Zwalidowana wilgotnosc wzgledna (%).",
+          "source_columns": [
+            "weather_bronze.humidity"
+          ]
+        },
+        {
+          "name": "pressure",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Zwalidowane cisnienie atmosferyczne (hPa).",
+          "source_columns": [
+            "weather_bronze.pressure"
+          ]
+        },
+        {
+          "name": "wind_speed",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Zwalidowana predkosc wiatru (m/s).",
+          "source_columns": [
+            "weather_bronze.wind_speed"
+          ]
+        },
+        {
+          "name": "wind_direction",
+          "dtype": "integer",
+          "pandas_dtype": "int64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Zwalidowany kierunek wiatru (stopnie).",
+          "source_columns": [
+            "weather_bronze.wind_direction"
+          ]
+        },
+        {
+          "name": "rain_mm",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Zwalidowany opad deszczu (mm).",
+          "source_columns": [
+            "weather_bronze.rain_mm"
+          ]
+        },
+        {
+          "name": "cloud_cover",
+          "dtype": "integer",
+          "pandas_dtype": "int64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Zwalidowane zachmurzenie (%).",
+          "source_columns": [
+            "weather_bronze.cloud_cover"
+          ]
+        },
+        {
+          "name": "is_valid",
+          "dtype": "boolean",
+          "pandas_dtype": "bool",
+          "nullable": false,
+          "null_count": 0,
+          "description": "True, jesli wiersz przeszedl wszystkie reguly walidacji.",
+          "source_columns": [
+            "weather_bronze.temperature",
+            "weather_bronze.humidity",
+            "weather_bronze.pressure",
+            "weather_bronze.wind_speed",
+            "weather_bronze.wind_direction",
+            "weather_bronze.rain_mm",
+            "weather_bronze.cloud_cover",
+            "weather_bronze.timestamp"
+          ]
+        }
+      ],
+      "produced_by_run": "89962fe93d2f",
+      "created_at": "2026-06-29T07:50:42.041118+00:00",
+      "content_hash": "b31c22e701b0a498"
+    },
+    "weather_hourly_gold": {
+      "name": "weather_hourly_gold",
+      "layer": "gold",
+      "description": "Wyselekcjonowane godzinowe cechy pogodowe per stacja oraz regulowy wskaznik komfortu.",
+      "location": "C:\\AWS_28\\project_29_metadata_lineage\\data\\gold\\weather_hourly_gold.parquet",
+      "fmt": "parquet",
+      "row_count": 68,
+      "columns": [
+        {
+          "name": "station_id",
+          "dtype": "string",
+          "pandas_dtype": "object",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Identyfikator stacji pogodowej.",
+          "source_columns": [
+            "weather_silver.station_id"
+          ]
+        },
+        {
+          "name": "hour",
+          "dtype": "timestamp",
+          "pandas_dtype": "datetime64[ns, UTC]",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Kubelek godzinowy (UTC), po ktorym agregowane sa metryki.",
+          "source_columns": [
+            "weather_silver.timestamp"
+          ]
+        },
+        {
+          "name": "avg_temperature",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Srednia temperatura w danej godzinie.",
+          "source_columns": [
+            "weather_silver.temperature"
+          ]
+        },
+        {
+          "name": "avg_humidity",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Srednia wilgotnosc wzgledna w danej godzinie.",
+          "source_columns": [
+            "weather_silver.humidity"
+          ]
+        },
+        {
+          "name": "avg_pressure",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Srednie cisnienie w danej godzinie.",
+          "source_columns": [
+            "weather_silver.pressure"
+          ]
+        },
+        {
+          "name": "max_wind_speed",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Maksymalna predkosc wiatru w danej godzinie.",
+          "source_columns": [
+            "weather_silver.wind_speed"
+          ]
+        },
+        {
+          "name": "total_rain_mm",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Sumaryczny opad deszczu w danej godzinie.",
+          "source_columns": [
+            "weather_silver.rain_mm"
+          ]
+        },
+        {
+          "name": "avg_cloud_cover",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Srednie zachmurzenie w danej godzinie.",
+          "source_columns": [
+            "weather_silver.cloud_cover"
+          ]
+        },
+        {
+          "name": "n_measurements",
+          "dtype": "integer",
+          "pandas_dtype": "int64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Liczba poprawnych pomiarow zagregowanych w kubelku.",
+          "source_columns": [
+            "weather_silver.temperature"
+          ]
+        },
+        {
+          "name": "comfort_index",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Prosty regulowy wskaznik komfortu (0-100) z temperatury/wilgotnosci/wiatru.",
+          "source_columns": [
+            "weather_silver.temperature",
+            "weather_silver.humidity",
+            "weather_silver.wind_speed"
+          ]
+        }
+      ],
+      "produced_by_run": "61ae9cfb7c55",
+      "created_at": "2026-06-29T07:50:42.059299+00:00",
+      "content_hash": "3c02061262a5f2ba"
+    },
+    "station_summary": {
+      "name": "station_summary",
+      "layer": "report",
+      "description": "Analityczne podsumowanie per stacja uzywane przez raport/dashboard.",
+      "location": "C:\\AWS_28\\project_29_metadata_lineage\\data\\reports\\station_summary.csv",
+      "fmt": "csv",
+      "row_count": 4,
+      "columns": [
+        {
+          "name": "station_id",
+          "dtype": "string",
+          "pandas_dtype": "object",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Identyfikator stacji pogodowej.",
+          "source_columns": [
+            "weather_hourly_gold.station_id"
+          ]
+        },
+        {
+          "name": "hours_covered",
+          "dtype": "integer",
+          "pandas_dtype": "int64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Liczba roznych kubelkow godzinowych dostepnych dla stacji.",
+          "source_columns": [
+            "weather_hourly_gold.hour"
+          ]
+        },
+        {
+          "name": "avg_temperature",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Srednia temperatura ze wszystkich kubelkow godzinowych.",
+          "source_columns": [
+            "weather_hourly_gold.avg_temperature"
+          ]
+        },
+        {
+          "name": "avg_comfort_index",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Sredni wskaznik komfortu ze wszystkich kubelkow godzinowych.",
+          "source_columns": [
+            "weather_hourly_gold.comfort_index"
+          ]
+        },
+        {
+          "name": "total_rain_mm",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Sumaryczny opad deszczu ze wszystkich kubelkow godzinowych.",
+          "source_columns": [
+            "weather_hourly_gold.total_rain_mm"
+          ]
+        },
+        {
+          "name": "peak_wind_speed",
+          "dtype": "double",
+          "pandas_dtype": "float64",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Najwyzsza zaobserwowana godzinowa maksymalna predkosc wiatru.",
+          "source_columns": [
+            "weather_hourly_gold.max_wind_speed"
+          ]
+        },
+        {
+          "name": "comfort_label",
+          "dtype": "string",
+          "pandas_dtype": "object",
+          "nullable": false,
+          "null_count": 0,
+          "description": "Czytelna etykieta komfortu wyliczona z avg_comfort_index.",
+          "source_columns": [
+            "weather_hourly_gold.comfort_index"
+          ]
+        }
+      ],
+      "produced_by_run": "9f196fc9d3b9",
+      "created_at": "2026-06-29T07:50:42.077349+00:00",
+      "content_hash": "69500f8d99259f99"
+    }
+  },
+  "runs": [
+    {
+      "run_id": "78ff21e0c3b0",
+      "step": "ingest",
+      "description": "Pobranie surowych pomiarow z Weather REST API i zapis ich na dysk (Bronze).",
+      "code_ref": "src.ingest:ingest",
+      "inputs": [
+        "weather_api"
+      ],
+      "outputs": [
+        "weather_bronze"
+      ],
+      "params": {
+        "api_base_url": "https://e6uw49pbah.execute-api.us-east-1.amazonaws.com/dev",
+        "limit": 100,
+        "stations": [
+          "GDN_01",
+          "GDN_02",
+          "GDY_01",
+          "SOP_01"
+        ]
+      },
+      "metrics": {
+        "stations": 4,
+        "raw_files_written": 4,
+        "rows_ingested": 400
+      },
+      "started_at": "2026-06-29T07:50:39.331799+00:00",
+      "finished_at": "2026-06-29T07:50:42.003233+00:00",
+      "status": "success",
+      "environment": {
+        "python": "3.10.11",
+        "platform": "Windows-10-10.0.26200-SP0",
+        "pandas": "2.3.3"
+      }
+    },
+    {
+      "run_id": "89962fe93d2f",
+      "step": "validate",
+      "description": "Walidacja i czyszczenie danych Bronze do tabeli Silver (deduplikacja, rzutowanie typow, kontrola zakresow).",
+      "code_ref": "src.validate:validate",
+      "inputs": [
+        "weather_bronze"
+      ],
+      "outputs": [
+        "weather_silver"
+      ],
+      "params": {
+        "valid_ranges": {
+          "temperature": [
+            -60.0,
+            60.0
+          ],
+          "humidity": [
+            0.0,
+            100.0
+          ],
+          "pressure": [
+            850.0,
+            1100.0
+          ],
+          "wind_speed": [
+            0.0,
+            120.0
+          ],
+          "wind_direction": [
+            0.0,
+            360.0
+          ],
+          "rain_mm": [
+            0.0,
+            500.0
+          ],
+          "cloud_cover": [
+            0.0,
+            100.0
+          ]
+        }
+      },
+      "metrics": {
+        "rows_in": 400,
+        "rows_out": 400,
+        "duplicates_removed": 0,
+        "invalid_quarantined": 0,
+        "quality_score": 1.0
+      },
+      "started_at": "2026-06-29T07:50:42.003233+00:00",
+      "finished_at": "2026-06-29T07:50:42.042118+00:00",
+      "status": "success",
+      "environment": {
+        "python": "3.10.11",
+        "platform": "Windows-10-10.0.26200-SP0",
+        "pandas": "2.3.3"
+      }
+    },
+    {
+      "run_id": "61ae9cfb7c55",
+      "step": "transform",
+      "description": "Agregacja danych Silver do godzinowych cech Gold per stacja, wraz ze wskaznikiem komfortu.",
+      "code_ref": "src.transform:transform",
+      "inputs": [
+        "weather_silver"
+      ],
+      "outputs": [
+        "weather_hourly_gold"
+      ],
+      "params": {
+        "grain": "station_id x hour"
+      },
+      "metrics": {
+        "rows_out": 68,
+        "stations": 4
+      },
+      "started_at": "2026-06-29T07:50:42.042118+00:00",
+      "finished_at": "2026-06-29T07:50:42.060999+00:00",
+      "status": "success",
+      "environment": {
+        "python": "3.10.11",
+        "platform": "Windows-10-10.0.26200-SP0",
+        "pandas": "2.3.3"
+      }
+    },
+    {
+      "run_id": "9f196fc9d3b9",
+      "step": "report",
+      "description": "Zbudowanie zbioru podsumowujacego per stacja na potrzeby raportu/dashboardu.",
+      "code_ref": "src.report:report",
+      "inputs": [
+        "weather_hourly_gold"
+      ],
+      "outputs": [
+        "station_summary"
+      ],
+      "params": {
+        "grain": "station_id"
+      },
+      "metrics": {
+        "rows_out": 4
+      },
+      "started_at": "2026-06-29T07:50:42.060999+00:00",
+      "finished_at": "2026-06-29T07:50:42.079382+00:00",
+      "status": "success",
+      "environment": {
+        "python": "3.10.11",
+        "platform": "Windows-10-10.0.26200-SP0",
+        "pandas": "2.3.3"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "src": "weather_api",
+      "dst": "weather_bronze",
+      "run_id": "78ff21e0c3b0",
+      "kind": "dataset"
+    },
+    {
+      "src": "weather_bronze",
+      "dst": "weather_silver",
+      "run_id": "89962fe93d2f",
+      "kind": "dataset"
+    },
+    {
+      "src": "weather_silver",
+      "dst": "weather_hourly_gold",
+      "run_id": "61ae9cfb7c55",
+      "kind": "dataset"
+    },
+    {
+      "src": "weather_hourly_gold",
+      "dst": "station_summary",
+      "run_id": "9f196fc9d3b9",
+      "kind": "dataset"
+    }
+  ],
+  "column_edges": [
+    {
+      "src": "weather_api.records",
+      "dst": "weather_bronze.timestamp",
+      "run_id": "78ff21e0c3b0"
+    },
+    {
+      "src": "weather_api.records",
+      "dst": "weather_bronze.station_id",
+      "run_id": "78ff21e0c3b0"
+    },
+    {
+      "src": "weather_api.records",
+      "dst": "weather_bronze.temperature",
+      "run_id": "78ff21e0c3b0"
+    },
+    {
+      "src": "weather_api.records",
+      "dst": "weather_bronze.humidity",
+      "run_id": "78ff21e0c3b0"
+    },
+    {
+      "src": "weather_api.records",
+      "dst": "weather_bronze.pressure",
+      "run_id": "78ff21e0c3b0"
+    },
+    {
+      "src": "weather_api.records",
+      "dst": "weather_bronze.wind_speed",
+      "run_id": "78ff21e0c3b0"
+    },
+    {
+      "src": "weather_api.records",
+      "dst": "weather_bronze.wind_direction",
+      "run_id": "78ff21e0c3b0"
+    },
+    {
+      "src": "weather_api.records",
+      "dst": "weather_bronze.rain_mm",
+      "run_id": "78ff21e0c3b0"
+    },
+    {
+      "src": "weather_api.records",
+      "dst": "weather_bronze.cloud_cover",
+      "run_id": "78ff21e0c3b0"
+    },
+    {
+      "src": "weather_api.records",
+      "dst": "weather_bronze._ingested_at",
+      "run_id": "78ff21e0c3b0"
+    },
+    {
+      "src": "weather_api.records",
+      "dst": "weather_bronze._source_file",
+      "run_id": "78ff21e0c3b0"
+    },
+    {
+      "src": "weather_bronze.timestamp",
+      "dst": "weather_silver.timestamp",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.station_id",
+      "dst": "weather_silver.station_id",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.temperature",
+      "dst": "weather_silver.temperature",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.humidity",
+      "dst": "weather_silver.humidity",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.pressure",
+      "dst": "weather_silver.pressure",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.wind_speed",
+      "dst": "weather_silver.wind_speed",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.wind_direction",
+      "dst": "weather_silver.wind_direction",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.rain_mm",
+      "dst": "weather_silver.rain_mm",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.cloud_cover",
+      "dst": "weather_silver.cloud_cover",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.temperature",
+      "dst": "weather_silver.is_valid",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.humidity",
+      "dst": "weather_silver.is_valid",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.pressure",
+      "dst": "weather_silver.is_valid",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.wind_speed",
+      "dst": "weather_silver.is_valid",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.wind_direction",
+      "dst": "weather_silver.is_valid",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.rain_mm",
+      "dst": "weather_silver.is_valid",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.cloud_cover",
+      "dst": "weather_silver.is_valid",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_bronze.timestamp",
+      "dst": "weather_silver.is_valid",
+      "run_id": "89962fe93d2f"
+    },
+    {
+      "src": "weather_silver.station_id",
+      "dst": "weather_hourly_gold.station_id",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_silver.timestamp",
+      "dst": "weather_hourly_gold.hour",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_silver.temperature",
+      "dst": "weather_hourly_gold.avg_temperature",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_silver.humidity",
+      "dst": "weather_hourly_gold.avg_humidity",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_silver.pressure",
+      "dst": "weather_hourly_gold.avg_pressure",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_silver.wind_speed",
+      "dst": "weather_hourly_gold.max_wind_speed",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_silver.rain_mm",
+      "dst": "weather_hourly_gold.total_rain_mm",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_silver.cloud_cover",
+      "dst": "weather_hourly_gold.avg_cloud_cover",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_silver.temperature",
+      "dst": "weather_hourly_gold.n_measurements",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_silver.temperature",
+      "dst": "weather_hourly_gold.comfort_index",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_silver.humidity",
+      "dst": "weather_hourly_gold.comfort_index",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_silver.wind_speed",
+      "dst": "weather_hourly_gold.comfort_index",
+      "run_id": "61ae9cfb7c55"
+    },
+    {
+      "src": "weather_hourly_gold.station_id",
+      "dst": "station_summary.station_id",
+      "run_id": "9f196fc9d3b9"
+    },
+    {
+      "src": "weather_hourly_gold.hour",
+      "dst": "station_summary.hours_covered",
+      "run_id": "9f196fc9d3b9"
+    },
+    {
+      "src": "weather_hourly_gold.avg_temperature",
+      "dst": "station_summary.avg_temperature",
+      "run_id": "9f196fc9d3b9"
+    },
+    {
+      "src": "weather_hourly_gold.comfort_index",
+      "dst": "station_summary.avg_comfort_index",
+      "run_id": "9f196fc9d3b9"
+    },
+    {
+      "src": "weather_hourly_gold.total_rain_mm",
+      "dst": "station_summary.total_rain_mm",
+      "run_id": "9f196fc9d3b9"
+    },
+    {
+      "src": "weather_hourly_gold.max_wind_speed",
+      "dst": "station_summary.peak_wind_speed",
+      "run_id": "9f196fc9d3b9"
+    },
+    {
+      "src": "weather_hourly_gold.comfort_index",
+      "dst": "station_summary.comfort_label",
+      "run_id": "9f196fc9d3b9"
+    }
+  ]
+}

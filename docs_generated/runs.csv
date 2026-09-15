@@ -1,0 +1,5 @@
+id_uruchomienia,krok,status,wejscia,wyjscia,czas_startu,czas_konca,metryki
+78ff21e0c3b0,ingest,success,weather_api,weather_bronze,2026-06-29T07:50:39.331799+00:00,2026-06-29T07:50:42.003233+00:00,"{'stations': 4, 'raw_files_written': 4, 'rows_ingested': 400}"
+89962fe93d2f,validate,success,weather_bronze,weather_silver,2026-06-29T07:50:42.003233+00:00,2026-06-29T07:50:42.042118+00:00,"{'rows_in': 400, 'rows_out': 400, 'duplicates_removed': 0, 'invalid_quarantined': 0, 'quality_score': 1.0}"
+61ae9cfb7c55,transform,success,weather_silver,weather_hourly_gold,2026-06-29T07:50:42.042118+00:00,2026-06-29T07:50:42.060999+00:00,"{'rows_out': 68, 'stations': 4}"
+9f196fc9d3b9,report,success,weather_hourly_gold,station_summary,2026-06-29T07:50:42.060999+00:00,2026-06-29T07:50:42.079382+00:00,{'rows_out': 4}

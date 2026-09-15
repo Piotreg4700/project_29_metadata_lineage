@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Katalog danych i lineage - Projekt 29</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });</script>
+<style>
+  body { font-family: system-ui, Segoe UI, Arial, sans-serif; margin: 0; color: #1b1f24;
+         background: #f6f8fa; }
+  header { background: #0d1b2a; color: #fff; padding: 24px 32px; }
+  header h1 { margin: 0 0 6px; font-size: 22px; }
+  header .meta { color: #9fb3c8; font-size: 13px; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 32px 64px; }
+  section { background: #fff; border: 1px solid #e1e4e8; border-radius: 10px;
+            padding: 20px 24px; margin: 20px 0; }
+  h2 { margin-top: 0; font-size: 18px; border-bottom: 2px solid #eaeef2; padding-bottom: 8px; }
+  h3 { font-size: 15px; margin: 18px 0 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { border: 1px solid #e1e4e8; padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: #f0f3f6; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px;
+           color: #fff; }
+  .bronze { background: #8a5a2b; } .silver { background: #6c757d; }
+  .gold { background: #b8860b; } .report { background: #1f6feb; }
+  code { background: #eef1f4; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+  .cards { display: flex; gap: 12px; flex-wrap: wrap; }
+  .card { background: #f0f3f6; border-radius: 8px; padding: 12px 16px; min-width: 120px; }
+  .card b { font-size: 20px; display: block; }
+  .mermaid { background: #fbfdff; border: 1px dashed #c9d3de; border-radius: 8px; padding: 16px; }
+  ul { margin: 6px 0; }
+  .chart { margin: 8px 0; }
+  .bar-row { display: flex; align-items: center; gap: 10px; margin: 4px 0; }
+  .bar-label { width: 70px; font-size: 13px; font-family: monospace; }
+  .bar-track { flex: 1; background: #eef1f4; border-radius: 6px; height: 18px; overflow: hidden; }
+  .bar-fill { display: block; height: 100%; background: #1f6feb; }
+  .bar-val { width: 48px; text-align: right; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Katalog danych i lineage</h1>
+  <div class="meta">Projekt 29 &middot; uruchomienie <code>6ab2c280ea8f</code>
+   &middot; wygenerowano 2026-06-29T07:50:42.084349+00:00</div>
+</header>
+<main>
+
+<section>
+  <h2>Podsumowanie</h2>
+  <div class="cards">
+    <div class="card"><b>4</b>zbiory danych</div>
+    <div class="card"><b>4</b>uruchomienia</div>
+    <div class="card"><b>4</b>krawedzie zbiorow</div>
+    <div class="card"><b>47</b>krawedzie kolumn</div>
+    <div class="card"><b>38</b>skatalogowane kolumny</div>
+  </div>
+</section>
+<section>
+  <h2>Wyniki analityczne (per stacja)</h2>
+  <table>
+    <tr><th>Stacja</th><th>Godzin</th><th>Sr. temperatura</th><th>Sr. komfort</th>
+        <th>Suma opadow (mm)</th><th>Maks. wiatr (m/s)</th><th>Ocena komfortu</th></tr>
+    <tr><td><code>GDN_01</code></td><td>17</td><td>16.76</td><td>66.2</td><td>64.95</td><td>13.57</td><td>komfortowo</td></tr><tr><td><code>GDN_02</code></td><td>17</td><td>17.82</td><td>70.1</td><td>73.26</td><td>13.94</td><td>komfortowo</td></tr><tr><td><code>GDY_01</code></td><td>17</td><td>16.28</td><td>66.4</td><td>68.03</td><td>13.93</td><td>komfortowo</td></tr><tr><td><code>SOP_01</code></td><td>17</td><td>16.92</td><td>67.3</td><td>56.42</td><td>13.56</td><td>komfortowo</td></tr>
+  </table>
+  <h3>Sredni wskaznik komfortu (0-100)</h3>
+  <div class="chart"><div class="bar-row"><span class="bar-label">GDN_01</span><span class="bar-track"><span class="bar-fill" style="width:66.2%"></span></span><span class="bar-val">66.2</span></div><div class="bar-row"><span class="bar-label">GDN_02</span><span class="bar-track"><span class="bar-fill" style="width:70.1%"></span></span><span class="bar-val">70.1</span></div><div class="bar-row"><span class="bar-label">GDY_01</span><span class="bar-track"><span class="bar-fill" style="width:66.4%"></span></span><span class="bar-val">66.4</span></div><div class="bar-row"><span class="bar-label">SOP_01</span><span class="bar-track"><span class="bar-fill" style="width:67.3%"></span></span><span class="bar-val">67.3</span></div></div>
+  <h3>Wnioski</h3>
+  <ul><li>Najcieplejsza stacja: <b>GDN_02</b> (17.82 stopni C srednio).</li><li>Najbardziej komfortowa stacja: <b>GDN_02</b> (wskaznik 70.1, komfortowo).</li><li>Najwiecej opadow: <b>GDN_02</b> (73.26 mm lacznie).</li><li>Najsilniejszy wiatr: <b>GDN_02</b> (13.94 m/s w szczycie).</li></ul>
+</section>
+<section>
+  <h2>Lineage danych (pochodzenie)</h2>
+  <pre class="mermaid">
+graph LR
+  weather_api["weather_api (REST)"]
+  weather_bronze["weather_bronze&lt;br/&gt;(bronze, 400 wierszy)"]
+  weather_silver["weather_silver&lt;br/&gt;(silver, 400 wierszy)"]
+  weather_hourly_gold["weather_hourly_gold&lt;br/&gt;(gold, 68 wierszy)"]
+  station_summary["station_summary&lt;br/&gt;(report, 4 wierszy)"]
+  weather_api --&gt; weather_bronze
+  weather_bronze --&gt; weather_silver
+  weather_silver --&gt; weather_hourly_gold
+  weather_hourly_gold --&gt; station_summary
+  </pre>
+</section>
+<section><h2>Katalog danych i schematy</h2>
+<h3><code>weather_bronze</code> <span class="badge bronze">bronze</span></h3>
+<p>Surowe pomiary pogodowe pobrane z REST API, jeden wiersz na pomiar, wzbogacone o metadane pobrania. Bez zadnego czyszczenia.</p>
+<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\bronze\weather_bronze.parquet</code> &middot; format: parquet &middot; wierszy: 400 &middot; hash: <code>1cc32519a68a385a</code></small></p>
+<table><tr><th>Kolumna</th><th>Typ</th><th>Dopuszcza puste</th><th>Liczba pustych</th><th>Pochodzi z</th><th>Opis</th></tr>
+<tr><td><code>timestamp</code></td><td>string</td><td>False</td><td>0</td><td>weather_api.records</td><td>Czas pomiaru zwrocony przez API (ISO-8601, UTC).</td></tr>
+<tr><td><code>station_id</code></td><td>string</td><td>False</td><td>0</td><td>weather_api.records</td><td>Identyfikator stacji pogodowej.</td></tr>
+<tr><td><code>temperature</code></td><td>double</td><td>False</td><td>0</td><td>weather_api.records</td><td>Temperatura powietrza w stopniach Celsjusza.</td></tr>
+<tr><td><code>humidity</code></td><td>double</td><td>False</td><td>0</td><td>weather_api.records</td><td>Wilgotnosc wzgledna w procentach.</td></tr>
+<tr><td><code>pressure</code></td><td>double</td><td>False</td><td>0</td><td>weather_api.records</td><td>Cisnienie atmosferyczne w hPa.</td></tr>
+<tr><td><code>wind_speed</code></td><td>double</td><td>False</td><td>0</td><td>weather_api.records</td><td>Predkosc wiatru (m/s).</td></tr>
+<tr><td><code>wind_direction</code></td><td>integer</td><td>False</td><td>0</td><td>weather_api.records</td><td>Kierunek wiatru w stopniach (0-359).</td></tr>
+<tr><td><code>rain_mm</code></td><td>double</td><td>False</td><td>0</td><td>weather_api.records</td><td>Opad deszczu w milimetrach.</td></tr>
+<tr><td><code>cloud_cover</code></td><td>integer</td><td>False</td><td>0</td><td>weather_api.records</td><td>Zachmurzenie w procentach.</td></tr>
+<tr><td><code>_ingested_at</code></td><td>string</td><td>False</td><td>0</td><td>weather_api.records</td><td>Znacznik czasu pobrania dodany przez warstwe Bronze (metadane lineage).</td></tr>
+<tr><td><code>_source_file</code></td><td>string</td><td>False</td><td>0</td><td>weather_api.records</td><td>Sciezka surowego pliku JSON, z ktorego wczytano ten wiersz (metadane lineage).</td></tr>
+</table>
+<h3><code>weather_silver</code> <span class="badge silver">silver</span></h3>
+<p>Zwalidowane, odduplikowane i przerzutowane pomiary (tylko poprawne wiersze).</p>
+<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\silver\weather_silver.parquet</code> &middot; format: parquet &middot; wierszy: 400 &middot; hash: <code>b31c22e701b0a498</code></small></p>
+<table><tr><th>Kolumna</th><th>Typ</th><th>Dopuszcza puste</th><th>Liczba pustych</th><th>Pochodzi z</th><th>Opis</th></tr>
+<tr><td><code>timestamp</code></td><td>timestamp</td><td>False</td><td>0</td><td>weather_bronze.timestamp</td><td>Sparsowany czas pomiaru (ze strefa czasowa, UTC).</td></tr>
+<tr><td><code>station_id</code></td><td>string</td><td>False</td><td>0</td><td>weather_bronze.station_id</td><td>Identyfikator stacji pogodowej.</td></tr>
+<tr><td><code>temperature</code></td><td>double</td><td>False</td><td>0</td><td>weather_bronze.temperature</td><td>Zwalidowana temperatura powietrza (Celsjusz) w wiarygodnym zakresie.</td></tr>
+<tr><td><code>humidity</code></td><td>double</td><td>False</td><td>0</td><td>weather_bronze.humidity</td><td>Zwalidowana wilgotnosc wzgledna (%).</td></tr>
+<tr><td><code>pressure</code></td><td>double</td><td>False</td><td>0</td><td>weather_bronze.pressure</td><td>Zwalidowane cisnienie atmosferyczne (hPa).</td></tr>
+<tr><td><code>wind_speed</code></td><td>double</td><td>False</td><td>0</td><td>weather_bronze.wind_speed</td><td>Zwalidowana predkosc wiatru (m/s).</td></tr>
+<tr><td><code>wind_direction</code></td><td>integer</td><td>False</td><td>0</td><td>weather_bronze.wind_direction</td><td>Zwalidowany kierunek wiatru (stopnie).</td></tr>
+<tr><td><code>rain_mm</code></td><td>double</td><td>False</td><td>0</td><td>weather_bronze.rain_mm</td><td>Zwalidowany opad deszczu (mm).</td></tr>
+<tr><td><code>cloud_cover</code></td><td>integer</td><td>False</td><td>0</td><td>weather_bronze.cloud_cover</td><td>Zwalidowane zachmurzenie (%).</td></tr>
+<tr><td><code>is_valid</code></td><td>boolean</td><td>False</td><td>0</td><td>weather_bronze.temperature<br/>weather_bronze.humidity<br/>weather_bronze.pressure<br/>weather_bronze.wind_speed<br/>weather_bronze.wind_direction<br/>weather_bronze.rain_mm<br/>weather_bronze.cloud_cover<br/>weather_bronze.timestamp</td><td>True, jesli wiersz przeszedl wszystkie reguly walidacji.</td></tr>
+</table>
+<h3><code>weather_hourly_gold</code> <span class="badge gold">gold</span></h3>
+<p>Wyselekcjonowane godzinowe cechy pogodowe per stacja oraz regulowy wskaznik komfortu.</p>
+<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\gold\weather_hourly_gold.parquet</code> &middot; format: parquet &middot; wierszy: 68 &middot; hash: <code>3c02061262a5f2ba</code></small></p>
+<table><tr><th>Kolumna</th><th>Typ</th><th>Dopuszcza puste</th><th>Liczba pustych</th><th>Pochodzi z</th><th>Opis</th></tr>
+<tr><td><code>station_id</code></td><td>string</td><td>False</td><td>0</td><td>weather_silver.station_id</td><td>Identyfikator stacji pogodowej.</td></tr>
+<tr><td><code>hour</code></td><td>timestamp</td><td>False</td><td>0</td><td>weather_silver.timestamp</td><td>Kubelek godzinowy (UTC), po ktorym agregowane sa metryki.</td></tr>
+<tr><td><code>avg_temperature</code></td><td>double</td><td>False</td><td>0</td><td>weather_silver.temperature</td><td>Srednia temperatura w danej godzinie.</td></tr>
+<tr><td><code>avg_humidity</code></td><td>double</td><td>False</td><td>0</td><td>weather_silver.humidity</td><td>Srednia wilgotnosc wzgledna w danej godzinie.</td></tr>
+<tr><td><code>avg_pressure</code></td><td>double</td><td>False</td><td>0</td><td>weather_silver.pressure</td><td>Srednie cisnienie w danej godzinie.</td></tr>
+<tr><td><code>max_wind_speed</code></td><td>double</td><td>False</td><td>0</td><td>weather_silver.wind_speed</td><td>Maksymalna predkosc wiatru w danej godzinie.</td></tr>
+<tr><td><code>total_rain_mm</code></td><td>double</td><td>False</td><td>0</td><td>weather_silver.rain_mm</td><td>Sumaryczny opad deszczu w danej godzinie.</td></tr>
+<tr><td><code>avg_cloud_cover</code></td><td>double</td><td>False</td><td>0</td><td>weather_silver.cloud_cover</td><td>Srednie zachmurzenie w danej godzinie.</td></tr>
+<tr><td><code>n_measurements</code></td><td>integer</td><td>False</td><td>0</td><td>weather_silver.temperature</td><td>Liczba poprawnych pomiarow zagregowanych w kubelku.</td></tr>
+<tr><td><code>comfort_index</code></td><td>double</td><td>False</td><td>0</td><td>weather_silver.temperature<br/>weather_silver.humidity<br/>weather_silver.wind_speed</td><td>Prosty regulowy wskaznik komfortu (0-100) z temperatury/wilgotnosci/wiatru.</td></tr>
+</table>
+<h3><code>station_summary</code> <span class="badge report">report</span></h3>
+<p>Analityczne podsumowanie per stacja uzywane przez raport/dashboard.</p>
+<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\reports\station_summary.csv</code> &middot; format: csv &middot; wierszy: 4 &middot; hash: <code>69500f8d99259f99</code></small></p>
+<table><tr><th>Kolumna</th><th>Typ</th><th>Dopuszcza puste</th><th>Liczba pustych</th><th>Pochodzi z</th><th>Opis</th></tr>
+<tr><td><code>station_id</code></td><td>string</td><td>False</td><td>0</td><td>weather_hourly_gold.station_id</td><td>Identyfikator stacji pogodowej.</td></tr>
+<tr><td><code>hours_covered</code></td><td>integer</td><td>False</td><td>0</td><td>weather_hourly_gold.hour</td><td>Liczba roznych kubelkow godzinowych dostepnych dla stacji.</td></tr>
+<tr><td><code>avg_temperature</code></td><td>double</td><td>False</td><td>0</td><td>weather_hourly_gold.avg_temperature</td><td>Srednia temperatura ze wszystkich kubelkow godzinowych.</td></tr>
+<tr><td><code>avg_comfort_index</code></td><td>double</td><td>False</td><td>0</td><td>weather_hourly_gold.comfort_index</td><td>Sredni wskaznik komfortu ze wszystkich kubelkow godzinowych.</td></tr>
+<tr><td><code>total_rain_mm</code></td><td>double</td><td>False</td><td>0</td><td>weather_hourly_gold.total_rain_mm</td><td>Sumaryczny opad deszczu ze wszystkich kubelkow godzinowych.</td></tr>
+<tr><td><code>peak_wind_speed</code></td><td>double</td><td>False</td><td>0</td><td>weather_hourly_gold.max_wind_speed</td><td>Najwyzsza zaobserwowana godzinowa maksymalna predkosc wiatru.</td></tr>
+<tr><td><code>comfort_label</code></td><td>string</td><td>False</td><td>0</td><td>weather_hourly_gold.comfort_index</td><td>Czytelna etykieta komfortu wyliczona z avg_comfort_index.</td></tr>
+</table>
+</section>
+<section><h2>Dziennik uruchomien / transformacji</h2><table><tr><th>Uruchomienie</th><th>Krok</th><th>Status</th><th>Wejscia</th><th>Wyjscia</th><th>Metryki</th></tr>
+<tr><td><code>78ff21e0c3b0</code></td><td>ingest</td><td>success</td><td>weather_api</td><td>weather_bronze</td><td>{'stations': 4, 'raw_files_written': 4, 'rows_ingested': 400}</td></tr>
+<tr><td><code>89962fe93d2f</code></td><td>validate</td><td>success</td><td>weather_bronze</td><td>weather_silver</td><td>{'rows_in': 400, 'rows_out': 400, 'duplicates_removed': 0, 'invalid_quarantined': 0, 'quality_score': 1.0}</td></tr>
+<tr><td><code>61ae9cfb7c55</code></td><td>transform</td><td>success</td><td>weather_silver</td><td>weather_hourly_gold</td><td>{'rows_out': 68, 'stations': 4}</td></tr>
+<tr><td><code>9f196fc9d3b9</code></td><td>report</td><td>success</td><td>weather_hourly_gold</td><td>station_summary</td><td>{'rows_out': 4}</td></tr>
+</table></section>
+<section><h2>Analiza wplywu</h2>
+<h3>Na poziomie zbiorow danych</h3><ul>
+<li>Zmiana <code>weather_bronze</code> wplywa na: <code>weather_silver</code>, <code>weather_hourly_gold</code>, <code>station_summary</code></li>
+<li>Zmiana <code>weather_silver</code> wplywa na: <code>weather_hourly_gold</code>, <code>station_summary</code></li>
+<li>Zmiana <code>weather_hourly_gold</code> wplywa na: <code>station_summary</code></li>
+</ul><h3>Na poziomie kolumn (przyklady)</h3><ul>
+<li>Zmiana <code>weather_bronze.temperature</code> wplywa na: <code>weather_silver.temperature</code>, <code>weather_silver.is_valid</code>, <code>weather_hourly_gold.avg_temperature</code>, <code>weather_hourly_gold.n_measurements</code>, <code>weather_hourly_gold.comfort_index</code>, <code>station_summary.avg_temperature</code>, <code>station_summary.avg_comfort_index</code>, <code>station_summary.comfort_label</code></li>
+<li>Zmiana <code>weather_bronze.wind_speed</code> wplywa na: <code>weather_silver.wind_speed</code>, <code>weather_silver.is_valid</code>, <code>weather_hourly_gold.max_wind_speed</code>, <code>weather_hourly_gold.comfort_index</code>, <code>station_summary.peak_wind_speed</code>, <code>station_summary.avg_comfort_index</code>, <code>station_summary.comfort_label</code></li>
+<li>Zmiana <code>weather_silver.humidity</code> wplywa na: <code>weather_hourly_gold.avg_humidity</code>, <code>weather_hourly_gold.comfort_index</code>, <code>station_summary.avg_comfort_index</code>, <code>station_summary.comfort_label</code></li>
+</ul></section>
+</main></body></html>

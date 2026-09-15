@@ -1,0 +1,10 @@
+graph LR
+  weather_api["weather_api (REST)"]
+  weather_bronze["weather_bronze<br/>(bronze, 400 wierszy)"]
+  weather_silver["weather_silver<br/>(silver, 400 wierszy)"]
+  weather_hourly_gold["weather_hourly_gold<br/>(gold, 68 wierszy)"]
+  station_summary["station_summary<br/>(report, 4 wierszy)"]
+  weather_api --> weather_bronze
+  weather_bronze --> weather_silver
+  weather_silver --> weather_hourly_gold
+  weather_hourly_gold --> station_summary
