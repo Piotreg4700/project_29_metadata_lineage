@@ -47,18 +47,11 @@ def fetch_batch(station_id: str, limit: int) -> dict:
 def ingest(catalog: Catalog, stations: list[str] | None = None,
            limit: int | None = None) -> pd.DataFrame:
     limit = limit or config.BATCH_LIMIT
-    run = catalog.start_run(
-        step="ingest",
-        description="Pobranie surowych pomiarow z Weather REST API i zapis ich na dysk (Bronze).",
-        code_ref="src.ingest:ingest",
-        inputs=["weather_api"],
-        params={"api_base_url": config.API_BASE_URL, "limit": limit},
-    )
+    run = catalog.start_run(step="ingest", inputs=["weather_api"])
 
     try:
         if stations is None:
             stations = fetch_stations()
-        run.params["stations"] = stations
 
         run_stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         rows: list[dict] = []

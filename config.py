@@ -17,11 +17,9 @@ SILVER_DIR = DATA_DIR / "silver"
 GOLD_DIR = DATA_DIR / "gold"
 REPORT_DIR = DATA_DIR / "reports"
 
-CATALOG_DIR = ROOT / "catalog"
-CATALOG_JSON = CATALOG_DIR / "catalog.json"
 DOCS_DIR = ROOT / "docs_generated"
 
 
 def ensure_dirs() -> None:
-    for d in (BRONZE_DIR, SILVER_DIR, GOLD_DIR, REPORT_DIR, CATALOG_DIR, DOCS_DIR):
+    for d in (BRONZE_DIR, SILVER_DIR, GOLD_DIR, REPORT_DIR, DOCS_DIR):
         d.mkdir(parents=True, exist_ok=True)

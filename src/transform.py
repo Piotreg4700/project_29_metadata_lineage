@@ -28,13 +28,7 @@ def _comfort_index(row: pd.Series) -> float:
 
 
 def transform(catalog: Catalog, silver: pd.DataFrame) -> pd.DataFrame:
-    run = catalog.start_run(
-        step="transform",
-        description="Agregacja danych Silver do godzinowych cech Gold per stacja, wraz ze wskaznikiem komfortu.",
-        code_ref="src.transform:transform",
-        inputs=["weather_silver"],
-        params={"grain": "station_id x hour"},
-    )
+    run = catalog.start_run(step="transform", inputs=["weather_silver"])
 
     try:
         df = silver.copy()

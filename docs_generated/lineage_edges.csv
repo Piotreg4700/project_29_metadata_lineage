@@ -1,5 +1,0 @@
-zrodlo,cel,id_uruchomienia,rodzaj
-weather_api,weather_bronze,78ff21e0c3b0,dataset
-weather_bronze,weather_silver,89962fe93d2f,dataset
-weather_silver,weather_hourly_gold,61ae9cfb7c55,dataset
-weather_hourly_gold,station_summary,9f196fc9d3b9,dataset

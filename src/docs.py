@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import csv
 from pathlib import Path
 
 import pandas as pd
@@ -15,38 +14,8 @@ def _write(path: Path, text: str) -> None:
     path.write_text(text, encoding="utf-8")
 
 
-def generate_data_catalog(cat: Catalog, out_dir: Path) -> Path:
-    lines = ["# Katalog danych - przetwarzanie danych pogodowych", ""]
-    lines.append(f"- Identyfikator uruchomienia: `{cat.pipeline_run_id}`")
-    lines.append(f"- Wygenerowano: {cat.to_dict()['generated_at']}")
-    lines.append(f"- Zbiory danych: {len(cat.assets)} | Uruchomienia: {len(cat.runs)} | "
-                 f"Krawedzie lineage: {len(cat.edges)}")
-    lines.append("")
-
-    for name, asset in sorted(cat.assets.items(),
-                              key=lambda kv: (_LAYER_ORDER.get(kv[1].layer, 9), kv[0])):
-        lines.append(f"## `{name}`  _( warstwa {asset.layer} )_")
-        lines.append("")
-        lines.append(f"- **Opis:** {asset.description}")
-        lines.append(f"- **Lokalizacja:** `{asset.location}`")
-        lines.append(f"- **Format:** {asset.fmt}")
-        lines.append(f"- **Liczba wierszy:** {asset.row_count}")
-        lines.append(f"- **Utworzone przez uruchomienie:** `{asset.produced_by_run}`")
-        lines.append(f"- **Suma kontrolna (hash):** `{asset.content_hash}`")
-        lines.append("")
-        lines.append("| Kolumna | Typ | Dopuszcza puste | Liczba pustych | Pochodzi z | Opis |")
-        lines.append("|---|---|---|---|---|---|")
-        for c in asset.columns:
-            src = "<br>".join(c.source_columns) if c.source_columns else "-"
-            lines.append(
-                f"| `{c.name}` | {c.dtype} | {c.nullable} | {c.null_count} | "
-                f"{src} | {c.description} |"
-            )
-        lines.append("")
-
-    path = out_dir / "data_catalog.md"
-    _write(path, "\n".join(lines))
-    return path
+def _esc(text: object) -> str:
+    return (str(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
 
 
 def _mermaid_graph(cat: Catalog) -> str:
@@ -57,79 +26,6 @@ def _mermaid_graph(cat: Catalog) -> str:
     for e in cat.edges:
         lines.append(f"  {e.src} --> {e.dst}")
     return "\n".join(lines)
-
-
-def generate_lineage_mermaid(cat: Catalog, out_dir: Path) -> Path:
-    path = out_dir / "lineage.mmd"
-    _write(path, _mermaid_graph(cat))
-    return path
-
-
-def generate_lineage_tables(cat: Catalog, out_dir: Path) -> tuple[Path, Path, Path]:
-    edges_path = out_dir / "lineage_edges.csv"
-    with edges_path.open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        w.writerow(["zrodlo", "cel", "id_uruchomienia", "rodzaj"])
-        for e in cat.edges:
-            w.writerow([e.src, e.dst, e.run_id, e.kind])
-
-    col_path = out_dir / "column_lineage.csv"
-    with col_path.open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        w.writerow(["kolumna_zrodlowa", "kolumna_docelowa", "id_uruchomienia"])
-        for e in cat.column_edges:
-            w.writerow([e.src, e.dst, e.run_id])
-
-    runs_path = out_dir / "runs.csv"
-    with runs_path.open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        w.writerow(["id_uruchomienia", "krok", "status", "wejscia", "wyjscia",
-                    "czas_startu", "czas_konca", "metryki"])
-        for r in cat.runs:
-            w.writerow([r.run_id, r.step, r.status, ";".join(r.inputs),
-                        ";".join(r.outputs), r.started_at, r.finished_at, r.metrics])
-    return edges_path, col_path, runs_path
-
-
-def generate_impact_analysis(cat: Catalog, out_dir: Path) -> Path:
-    lines = ["# Przyklady analizy wplywu", ""]
-    lines.append("Analiza wplywu odpowiada na pytanie: *jesli ten zbior/kolumna zmieni "
-                 "sie lub przestanie dzialac, ktore wyniki ponizej zostana dotkniete?* "
-                 "Jest wyliczana automatycznie z zarejestrowanego grafu lineage.")
-    lines.append("")
-
-    lines.append("## Wplyw na poziomie zbiorow danych")
-    lines.append("")
-    for name in cat.assets:
-        down = cat.downstream_assets(name)
-        if down:
-            lines.append(f"- Zmiana **`{name}`** wplywa na: " +
-                         ", ".join(f"`{d}`" for d in down))
-    lines.append("")
-
-    lines.append("## Wplyw na poziomie kolumn")
-    lines.append("")
-    example_cols = [
-        "weather_bronze.temperature",
-        "weather_bronze.wind_speed",
-        "weather_silver.humidity",
-    ]
-    for col in example_cols:
-        down = cat.downstream_columns(col)
-        if down:
-            lines.append(f"- Zmiana **`{col}`** wplywa na kolumny: " +
-                         ", ".join(f"`{d}`" for d in down))
-        else:
-            lines.append(f"- Zmiana **`{col}`** nie ma zarejestrowanych kolumn zaleznych.")
-    lines.append("")
-
-    path = out_dir / "impact_analysis.md"
-    _write(path, "\n".join(lines))
-    return path
-
-
-def _esc(text: object) -> str:
-    return (str(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
 
 
 def _analytical_section() -> str:
@@ -188,8 +84,9 @@ def _analytical_section() -> str:
 </section>"""
 
 
-def generate_html_report(cat: Catalog, out_dir: Path) -> Path:
-    d = cat.to_dict()
+def generate_html_report(cat: Catalog, out_dir: Path | None = None) -> Path:
+    out_dir = out_dir or config.DOCS_DIR
+    out_dir.mkdir(parents=True, exist_ok=True)
     parts: list[str] = []
 
     parts.append("""<!DOCTYPE html>
@@ -238,7 +135,7 @@ def generate_html_report(cat: Catalog, out_dir: Path) -> Path:
     parts.append(f"""<header>
   <h1>Katalog danych i lineage</h1>
   <div class="meta">Projekt 29 &middot; uruchomienie <code>{_esc(cat.pipeline_run_id)}</code>
-   &middot; wygenerowano {_esc(d['generated_at'])}</div>
+   &middot; wygenerowano {_esc(cat.generated_at)}</div>
 </header>
 <main>
 """)
@@ -321,18 +218,3 @@ def generate_html_report(cat: Catalog, out_dir: Path) -> Path:
     path = out_dir / "report.html"
     _write(path, "\n".join(parts))
     return path
-
-
-def generate_all(cat: Catalog, out_dir: Path | None = None) -> dict[str, Path]:
-    out_dir = out_dir or config.DOCS_DIR
-    out_dir.mkdir(parents=True, exist_ok=True)
-    return {
-        "html_report": generate_html_report(cat, out_dir),
-        "data_catalog": generate_data_catalog(cat, out_dir),
-        "lineage_mermaid": generate_lineage_mermaid(cat, out_dir),
-        "impact_analysis": generate_impact_analysis(cat, out_dir),
-        **dict(zip(
-            ("lineage_edges", "column_lineage", "runs"),
-            generate_lineage_tables(cat, out_dir),
-        )),
-    }

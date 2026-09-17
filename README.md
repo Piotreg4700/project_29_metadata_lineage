@@ -3,12 +3,10 @@
 Course: *Autonomous Expert Systems and Data Exploration*.
 
 **Goal:** track where weather data comes from, how it changes through each
-processing step, and which outputs depend on each step - i.e. build a
-**data catalog + lineage + schema registry** on top of a real data pipeline.
+processing step, and which outputs depend on each step.
 
-This project does **not** invent data: it ingests from the shared Weather REST API,
-persists raw payloads, validates/cleans them, builds curated features, and produces
-an analytical report. At every step it captures metadata and lineage automatically.
+Data comes from the shared Weather REST API. Raw payloads are saved before
+cleaning. Each step records metadata and lineage. The result is one HTML report.
 
 ## Architecture
 
@@ -18,19 +16,13 @@ Weather REST API
       v
 [Bronze]  weather_bronze      -- raw measurements + ingestion metadata
       v
-[Silver]  weather_silver      -- validated, de-duplicated, type-cast (+ quarantine)
+[Silver]  weather_silver      -- validated, de-duplicated, type-cast
       v
 [Gold]    weather_hourly_gold -- hourly per-station features + comfort index
       v
 [Report]  station_summary     -- per-station analytical summary
-
-           +--------------------------------------------+
-every step | Catalog engine: schemas, runs, dataset &   |
-feeds ---> | column lineage, metrics, content hashes    |
-           +--------------------------------------------+
-                          |
-        auto-generated docs: data catalog, lineage diagram,
-        lineage tables, run log, impact analysis
+      v
+docs_generated/report.html    -- catalog, lineage, schemas, impact, results
 ```
 
 ## Project layout
@@ -38,61 +30,36 @@ feeds ---> | column lineage, metrics, content hashes    |
 | Path | Purpose |
 |---|---|
 | `config.py` | API URL/token, storage paths |
-| `src/catalog.py` | **Core**: metadata model + lineage graph + impact analysis + persistence |
+| `src/catalog.py` | metadata, lineage graph, impact analysis |
 | `src/ingest.py` | Bronze: fetch from API, persist raw JSON |
-| `src/validate.py` | Silver: validation rules, dedup, quarantine |
-| `src/transform.py` | Gold: hourly aggregation + rule-based comfort index |
-| `src/report.py` | Report: per-station summary dataset |
-| `src/docs.py` | Documentation automation (catalog.md, lineage, impact) |
-| `src/pipeline.py` | Orchestrator (entry point) |
-| `impact_query.py` | Ad-hoc impact-analysis CLI over the saved catalog |
+| `src/validate.py` | Silver: validation, dedup, quarantine |
+| `src/transform.py` | Gold: hourly aggregation + comfort index |
+| `src/report.py` | per-station summary dataset |
+| `src/docs.py` | generates `report.html` |
+| `src/pipeline.py` | runs all steps |
 | `data/` | bronze / silver / gold / reports (created at runtime) |
-| `catalog/catalog.json` | Machine-readable catalog (the single source of truth) |
-| `docs_generated/` | Human-readable, auto-generated documentation |
+| `docs_generated/report.html` | final report |
 
 ## How to run
 
 ```bash
 pip install -r requirements.txt
-
-# optional: override the token instead of using the default in config.py
-# Windows PowerShell:  $env:WEATHER_API_TOKEN="STUDENT_TOKEN_2026"
-
-python -m src.pipeline                       # full pipeline + docs
+python -m src.pipeline
 python -m src.pipeline --stations GDN_01 GDY_01 --limit 50
-
-# impact analysis (after the pipeline has run once)
-python impact_query.py --asset weather_silver
-python impact_query.py --column weather_bronze.temperature
 ```
 
-## Deliverables produced (map to the project brief)
+Open `docs_generated/report.html` in a browser.
 
-- **One-page HTML report (open in a browser)** -> `docs_generated/report.html`
-  (catalog + rendered lineage diagram + schemas + run log + impact analysis in one file)
-- **Data catalog** -> `catalog/catalog.json` + `docs_generated/data_catalog.md`
-- **Lineage diagram/table** -> `docs_generated/lineage.mmd` (Mermaid), `lineage_edges.csv`, `column_lineage.csv`
-- **Schema documentation** -> column tables in `data_catalog.md` (type, nullability, null count, lineage, description)
-- **Impact-analysis examples** -> `docs_generated/impact_analysis.md` + `impact_query.py`
-- **Run / transformation metadata** -> `docs_generated/runs.csv`
+## Deliverables (in report.html)
 
-## What the catalog captures per step
-
-- **Table metadata:** layer, location, format, row count, content hash, producing run.
-- **Schema registry:** every column with logical type, pandas dtype, nullability, null count, description.
-- **Dataset lineage:** edges `weather_api -> bronze -> silver -> gold -> report`.
-- **Column lineage:** e.g. `station_summary.comfort_label` traces back to
-  `weather_silver.temperature/humidity/wind_speed` and ultimately to the API.
-- **Run metadata:** run id, step, code reference, inputs/outputs, params, metrics
-  (rows in/out, duplicates removed, quality score), timestamps, status, environment.
-
-
+- data catalog and schema documentation
+- lineage diagram
+- run / transformation metrics
+- impact-analysis examples
+- analytical results (comfort index per station)
 
 ## Assumptions, limitations, improvements
 
 - **Assumptions:** API schema is stable; plausible value ranges in `validate.py`.
-- **Limitations:** lineage is captured at run time from explicit declarations
-  (not parsed from arbitrary code); no scheduler; local files instead of S3/Glue.
-- **Improvements:** push the catalog to AWS Glue Data Catalog / Athena; schedule
-  ingestion; add schema-change detection (compare `content_hash`/schema across runs);
-  render the Mermaid lineage in a small dashboard.
+- **Limitations:** lineage is declared in each step (not inferred from code); local files, no scheduler.
+- **Improvements:** S3 / Glue Data Catalog / Athena; schema-change detection from `content_hash`.

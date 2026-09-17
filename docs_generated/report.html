@@ -42,8 +42,8 @@
 
 <header>
   <h1>Katalog danych i lineage</h1>
-  <div class="meta">Projekt 29 &middot; uruchomienie <code>6ab2c280ea8f</code>
-   &middot; wygenerowano 2026-06-29T07:50:42.084349+00:00</div>
+  <div class="meta">Projekt 29 &middot; uruchomienie <code>d0e8831816c1</code>
+   &middot; wygenerowano 2026-09-17T16:03:17.671564+00:00</div>
 </header>
 <main>
 
@@ -62,12 +62,12 @@
   <table>
     <tr><th>Stacja</th><th>Godzin</th><th>Sr. temperatura</th><th>Sr. komfort</th>
         <th>Suma opadow (mm)</th><th>Maks. wiatr (m/s)</th><th>Ocena komfortu</th></tr>
-    <tr><td><code>GDN_01</code></td><td>17</td><td>16.76</td><td>66.2</td><td>64.95</td><td>13.57</td><td>komfortowo</td></tr><tr><td><code>GDN_02</code></td><td>17</td><td>17.82</td><td>70.1</td><td>73.26</td><td>13.94</td><td>komfortowo</td></tr><tr><td><code>GDY_01</code></td><td>17</td><td>16.28</td><td>66.4</td><td>68.03</td><td>13.93</td><td>komfortowo</td></tr><tr><td><code>SOP_01</code></td><td>17</td><td>16.92</td><td>67.3</td><td>56.42</td><td>13.56</td><td>komfortowo</td></tr>
+    <tr><td><code>GDN_01</code></td><td>18</td><td>16.63</td><td>65.2</td><td>57.08</td><td>13.94</td><td>komfortowo</td></tr><tr><td><code>GDN_02</code></td><td>18</td><td>17.82</td><td>68.3</td><td>65.19</td><td>13.99</td><td>komfortowo</td></tr><tr><td><code>GDY_01</code></td><td>18</td><td>16.96</td><td>67.6</td><td>65.81</td><td>13.95</td><td>komfortowo</td></tr><tr><td><code>SOP_01</code></td><td>18</td><td>17.28</td><td>67.6</td><td>58.63</td><td>13.9</td><td>komfortowo</td></tr>
   </table>
   <h3>Sredni wskaznik komfortu (0-100)</h3>
-  <div class="chart"><div class="bar-row"><span class="bar-label">GDN_01</span><span class="bar-track"><span class="bar-fill" style="width:66.2%"></span></span><span class="bar-val">66.2</span></div><div class="bar-row"><span class="bar-label">GDN_02</span><span class="bar-track"><span class="bar-fill" style="width:70.1%"></span></span><span class="bar-val">70.1</span></div><div class="bar-row"><span class="bar-label">GDY_01</span><span class="bar-track"><span class="bar-fill" style="width:66.4%"></span></span><span class="bar-val">66.4</span></div><div class="bar-row"><span class="bar-label">SOP_01</span><span class="bar-track"><span class="bar-fill" style="width:67.3%"></span></span><span class="bar-val">67.3</span></div></div>
+  <div class="chart"><div class="bar-row"><span class="bar-label">GDN_01</span><span class="bar-track"><span class="bar-fill" style="width:65.2%"></span></span><span class="bar-val">65.2</span></div><div class="bar-row"><span class="bar-label">GDN_02</span><span class="bar-track"><span class="bar-fill" style="width:68.3%"></span></span><span class="bar-val">68.3</span></div><div class="bar-row"><span class="bar-label">GDY_01</span><span class="bar-track"><span class="bar-fill" style="width:67.6%"></span></span><span class="bar-val">67.6</span></div><div class="bar-row"><span class="bar-label">SOP_01</span><span class="bar-track"><span class="bar-fill" style="width:67.6%"></span></span><span class="bar-val">67.6</span></div></div>
   <h3>Wnioski</h3>
-  <ul><li>Najcieplejsza stacja: <b>GDN_02</b> (17.82 stopni C srednio).</li><li>Najbardziej komfortowa stacja: <b>GDN_02</b> (wskaznik 70.1, komfortowo).</li><li>Najwiecej opadow: <b>GDN_02</b> (73.26 mm lacznie).</li><li>Najsilniejszy wiatr: <b>GDN_02</b> (13.94 m/s w szczycie).</li></ul>
+  <ul><li>Najcieplejsza stacja: <b>GDN_02</b> (17.82 stopni C srednio).</li><li>Najbardziej komfortowa stacja: <b>GDN_02</b> (wskaznik 68.3, komfortowo).</li><li>Najwiecej opadow: <b>GDY_01</b> (65.81 mm lacznie).</li><li>Najsilniejszy wiatr: <b>GDN_02</b> (13.99 m/s w szczycie).</li></ul>
 </section>
 <section>
   <h2>Lineage danych (pochodzenie)</h2>
@@ -76,7 +76,7 @@ graph LR
   weather_api["weather_api (REST)"]
   weather_bronze["weather_bronze&lt;br/&gt;(bronze, 400 wierszy)"]
   weather_silver["weather_silver&lt;br/&gt;(silver, 400 wierszy)"]
-  weather_hourly_gold["weather_hourly_gold&lt;br/&gt;(gold, 68 wierszy)"]
+  weather_hourly_gold["weather_hourly_gold&lt;br/&gt;(gold, 72 wierszy)"]
   station_summary["station_summary&lt;br/&gt;(report, 4 wierszy)"]
   weather_api --&gt; weather_bronze
   weather_bronze --&gt; weather_silver
@@ -87,7 +87,7 @@ graph LR
 <section><h2>Katalog danych i schematy</h2>
 <h3><code>weather_bronze</code> <span class="badge bronze">bronze</span></h3>
 <p>Surowe pomiary pogodowe pobrane z REST API, jeden wiersz na pomiar, wzbogacone o metadane pobrania. Bez zadnego czyszczenia.</p>
-<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\bronze\weather_bronze.parquet</code> &middot; format: parquet &middot; wierszy: 400 &middot; hash: <code>1cc32519a68a385a</code></small></p>
+<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\bronze\weather_bronze.parquet</code> &middot; format: parquet &middot; wierszy: 400 &middot; hash: <code>7b1bd5d998b653b3</code></small></p>
 <table><tr><th>Kolumna</th><th>Typ</th><th>Dopuszcza puste</th><th>Liczba pustych</th><th>Pochodzi z</th><th>Opis</th></tr>
 <tr><td><code>timestamp</code></td><td>string</td><td>False</td><td>0</td><td>weather_api.records</td><td>Czas pomiaru zwrocony przez API (ISO-8601, UTC).</td></tr>
 <tr><td><code>station_id</code></td><td>string</td><td>False</td><td>0</td><td>weather_api.records</td><td>Identyfikator stacji pogodowej.</td></tr>
@@ -103,7 +103,7 @@ graph LR
 </table>
 <h3><code>weather_silver</code> <span class="badge silver">silver</span></h3>
 <p>Zwalidowane, odduplikowane i przerzutowane pomiary (tylko poprawne wiersze).</p>
-<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\silver\weather_silver.parquet</code> &middot; format: parquet &middot; wierszy: 400 &middot; hash: <code>b31c22e701b0a498</code></small></p>
+<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\silver\weather_silver.parquet</code> &middot; format: parquet &middot; wierszy: 400 &middot; hash: <code>be2c801a1da19ff2</code></small></p>
 <table><tr><th>Kolumna</th><th>Typ</th><th>Dopuszcza puste</th><th>Liczba pustych</th><th>Pochodzi z</th><th>Opis</th></tr>
 <tr><td><code>timestamp</code></td><td>timestamp</td><td>False</td><td>0</td><td>weather_bronze.timestamp</td><td>Sparsowany czas pomiaru (ze strefa czasowa, UTC).</td></tr>
 <tr><td><code>station_id</code></td><td>string</td><td>False</td><td>0</td><td>weather_bronze.station_id</td><td>Identyfikator stacji pogodowej.</td></tr>
@@ -118,7 +118,7 @@ graph LR
 </table>
 <h3><code>weather_hourly_gold</code> <span class="badge gold">gold</span></h3>
 <p>Wyselekcjonowane godzinowe cechy pogodowe per stacja oraz regulowy wskaznik komfortu.</p>
-<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\gold\weather_hourly_gold.parquet</code> &middot; format: parquet &middot; wierszy: 68 &middot; hash: <code>3c02061262a5f2ba</code></small></p>
+<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\gold\weather_hourly_gold.parquet</code> &middot; format: parquet &middot; wierszy: 72 &middot; hash: <code>aec85d55b2208594</code></small></p>
 <table><tr><th>Kolumna</th><th>Typ</th><th>Dopuszcza puste</th><th>Liczba pustych</th><th>Pochodzi z</th><th>Opis</th></tr>
 <tr><td><code>station_id</code></td><td>string</td><td>False</td><td>0</td><td>weather_silver.station_id</td><td>Identyfikator stacji pogodowej.</td></tr>
 <tr><td><code>hour</code></td><td>timestamp</td><td>False</td><td>0</td><td>weather_silver.timestamp</td><td>Kubelek godzinowy (UTC), po ktorym agregowane sa metryki.</td></tr>
@@ -133,7 +133,7 @@ graph LR
 </table>
 <h3><code>station_summary</code> <span class="badge report">report</span></h3>
 <p>Analityczne podsumowanie per stacja uzywane przez raport/dashboard.</p>
-<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\reports\station_summary.csv</code> &middot; format: csv &middot; wierszy: 4 &middot; hash: <code>69500f8d99259f99</code></small></p>
+<p><small>Lokalizacja: <code>C:\AWS_28\project_29_metadata_lineage\data\reports\station_summary.csv</code> &middot; format: csv &middot; wierszy: 4 &middot; hash: <code>d4f32dbb7581cc50</code></small></p>
 <table><tr><th>Kolumna</th><th>Typ</th><th>Dopuszcza puste</th><th>Liczba pustych</th><th>Pochodzi z</th><th>Opis</th></tr>
 <tr><td><code>station_id</code></td><td>string</td><td>False</td><td>0</td><td>weather_hourly_gold.station_id</td><td>Identyfikator stacji pogodowej.</td></tr>
 <tr><td><code>hours_covered</code></td><td>integer</td><td>False</td><td>0</td><td>weather_hourly_gold.hour</td><td>Liczba roznych kubelkow godzinowych dostepnych dla stacji.</td></tr>
@@ -145,10 +145,10 @@ graph LR
 </table>
 </section>
 <section><h2>Dziennik uruchomien / transformacji</h2><table><tr><th>Uruchomienie</th><th>Krok</th><th>Status</th><th>Wejscia</th><th>Wyjscia</th><th>Metryki</th></tr>
-<tr><td><code>78ff21e0c3b0</code></td><td>ingest</td><td>success</td><td>weather_api</td><td>weather_bronze</td><td>{'stations': 4, 'raw_files_written': 4, 'rows_ingested': 400}</td></tr>
-<tr><td><code>89962fe93d2f</code></td><td>validate</td><td>success</td><td>weather_bronze</td><td>weather_silver</td><td>{'rows_in': 400, 'rows_out': 400, 'duplicates_removed': 0, 'invalid_quarantined': 0, 'quality_score': 1.0}</td></tr>
-<tr><td><code>61ae9cfb7c55</code></td><td>transform</td><td>success</td><td>weather_silver</td><td>weather_hourly_gold</td><td>{'rows_out': 68, 'stations': 4}</td></tr>
-<tr><td><code>9f196fc9d3b9</code></td><td>report</td><td>success</td><td>weather_hourly_gold</td><td>station_summary</td><td>{'rows_out': 4}</td></tr>
+<tr><td><code>06df6e7585e0</code></td><td>ingest</td><td>success</td><td>weather_api</td><td>weather_bronze</td><td>{'stations': 4, 'raw_files_written': 4, 'rows_ingested': 400}</td></tr>
+<tr><td><code>0cbe0bdd635a</code></td><td>validate</td><td>success</td><td>weather_bronze</td><td>weather_silver</td><td>{'rows_in': 400, 'rows_out': 400, 'duplicates_removed': 0, 'invalid_quarantined': 0, 'quality_score': 1.0}</td></tr>
+<tr><td><code>46aa0f9bbb4c</code></td><td>transform</td><td>success</td><td>weather_silver</td><td>weather_hourly_gold</td><td>{'rows_out': 72, 'stations': 4}</td></tr>
+<tr><td><code>f5c3ee721c75</code></td><td>report</td><td>success</td><td>weather_hourly_gold</td><td>station_summary</td><td>{'rows_out': 4}</td></tr>
 </table></section>
 <section><h2>Analiza wplywu</h2>
 <h3>Na poziomie zbiorow danych</h3><ul>

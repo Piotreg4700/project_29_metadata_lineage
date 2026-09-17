@@ -27,13 +27,7 @@ def _label(score: float) -> str:
 
 
 def report(catalog: Catalog, gold: pd.DataFrame) -> pd.DataFrame:
-    run = catalog.start_run(
-        step="report",
-        description="Zbudowanie zbioru podsumowujacego per stacja na potrzeby raportu/dashboardu.",
-        code_ref="src.report:report",
-        inputs=["weather_hourly_gold"],
-        params={"grain": "station_id"},
-    )
+    run = catalog.start_run(step="report", inputs=["weather_hourly_gold"])
 
     try:
         summary = gold.groupby("station_id", as_index=False).agg(

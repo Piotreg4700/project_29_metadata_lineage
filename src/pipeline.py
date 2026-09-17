@@ -25,12 +25,8 @@ def run_pipeline(stations: list[str] | None = None, limit: int | None = None) ->
     summary = report.report(cat, gold)
     print(f"[report]   summary rows: {len(summary)}")
 
-    cat.save(config.CATALOG_JSON)
-    print(f"[catalog]  saved -> {config.CATALOG_JSON}")
-
-    generated = docs.generate_all(cat)
-    for name, path in generated.items():
-        print(f"[docs]     {name:<16} -> {path}")
+    html = docs.generate_html_report(cat)
+    print(f"[docs]     report.html -> {html}")
 
     return cat
 

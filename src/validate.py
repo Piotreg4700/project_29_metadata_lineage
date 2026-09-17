@@ -30,13 +30,7 @@ _SILVER_COLUMN_DESCRIPTIONS = {
 
 
 def validate(catalog: Catalog, bronze: pd.DataFrame) -> pd.DataFrame:
-    run = catalog.start_run(
-        step="validate",
-        description="Walidacja i czyszczenie danych Bronze do tabeli Silver (deduplikacja, rzutowanie typow, kontrola zakresow).",
-        code_ref="src.validate:validate",
-        inputs=["weather_bronze"],
-        params={"valid_ranges": VALID_RANGES},
-    )
+    run = catalog.start_run(step="validate", inputs=["weather_bronze"])
 
     try:
         df = bronze.copy()
